@@ -1,0 +1,55 @@
+
+# Easier than remembering to always run from non-X
+#unsetenv DISPLAY
+# Likewise, for charset
+setenv LC_CTYPE en_US.UTF-8
+
+# Add stuff to xterm (and cousins) title bars.  This is a moderate abuse of the
+# hardstatus feature--it just puts the hardstatus stuff into an xterm title
+# bar.
+#termcapinfo xterm*|Eterm|mlterm 'hs:ts=\E]0;:fs=\007:ds=\E]0;screen\007'
+defhstatus "screen: $USER@$HOSTNAME"
+hardstatus off
+caption always "%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m/%d %{W}%c %{g}]"
+#caption always "%?%F%{-b bc}%:%{-b bb}%?%C|%D|%M %d|%H%?%F%{+u wb}%? %L=%-Lw%45>%{+b by}%n%f* %t%{-}%+Lw%-0<"
+sorendition "+b kG"
+
+activity "%c activity -> %n%f %t"
+bell_msg "%c bell -> %n%f %t^G"
+vbell_msg " *beep* "
+
+autodetach on
+
+zombie cr
+
+verbose on
+
+defscrollback 9999
+
+defutf8 on
+
+nonblock on
+
+#enable alternate buffer emulation for programs like vim
+altscreen on
+
+shell -$SHELL
+
+bind ^Q mapdefault
+bind q mapdefault
+bind ^S
+
+# Using tab to move around regions gets annoying.  These help.
+bind ^j focus down
+bind ^k focus up
+bind ^t focus top
+bind ^b focus bottom
+
+# Fix agent forwarding with screen
+# https://gist.github.com/martijnvermaat/8070533
+setenv SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
+
+# Clear the screen buffer and bind to '/' key
+bind F eval 'scrollback 0' 'scrollback 15000' 'echo "scrollback buffer cleared"'
+
+term screen-256color
